@@ -1,0 +1,310 @@
+{
+    "default_crs": [
+        {
+            "crs": "EPSG:2154",
+            "zones": ["all"],
+            "envs": ["all"]
+        }
+    ],
+    "profiles": [
+        {
+            "names": ["Profile_Prod", "Profile_Dev"],
+            "default": "Profile_Prod",
+            "policy": 1,
+            "zones": ["all"],
+            "envs": ["all"]
+        }
+    ],
+    "deploy_envs": [
+        {
+            "name": "prd",
+            "profiles": ["Profile_Prod"],
+            "suffix": ""
+        },
+        {
+            "name": "dev",
+            "profiles": ["Profile_Dev"],
+            "suffix": "-dev"
+        }
+    ],
+    "fqdn_regex": "OU=([A-Z]{4,5}),OU=(?:Rebound_users|Users),OU=T2_Users,OU=Tier_2,DC=example,DC=com",
+    "role_url": "https://my-api$ENV$.example.com/api/qgis/role",
+    "zones": [
+        {
+            "name": "zone1",
+            "domain_ntlm": "orga1",
+            "domain_email": "orga1.com",
+            "domain_fqdn": "ORGA1"
+        },
+        {
+            "name": "zone2",
+            "domain_ntlm": "orga2",
+            "domain_email": "orga2.com",
+            "domain_fqdn": "ORGA2"
+        }
+    ],
+    "network_drives": [
+        {
+            "drives": ["X:\\"],
+            "zones": ["orga1"],
+            "users": ["doe_j"],
+            "envs": ["all"]
+        }
+    ],
+    "plugins_repositories": [
+        {
+            "name": "My Repo",
+            "url": "https://my_plugin_repo$ENV$.example.com",
+            "authcfg": "",
+            "zones": ["all"],
+            "envs": ["all"],
+            "roles": ["all"]
+        }
+    ],
+    "plugins": [
+        {
+            "names": [
+                "processing",
+                "qwc2_tools",
+                "menu_from_project"
+            ],
+            "zones": ["all"],
+            "users": [],
+            "envs": ["all"]
+        }
+    ],
+    "plugins_configs": [
+        {
+            "plugin_name": "menu_from_project",
+            "config": {
+                "options": {
+                    "is_setup_visible": true,
+                    "optionTooltip": true,
+                    "optionCreateGroup": false,
+                    "optionSourceMD": "ogc"
+                },
+                "replace_projects": false,
+                "projects": [
+                    {
+                        "file": "my/project/path.qgz",
+                        "location": "new",
+                        "name": "mymenu",
+                        "type_storage": "file",
+                        "id": "024639f9-d130-4e83-9d93-example",
+                        "cache_config": {
+                            "cache_validation_uri": "my/project/validation.json",
+                            "enable": true,
+                            "refresh_days_period": 0
+                        }
+                    }
+                ]
+            },
+            "zones": ["org2"],
+            "users": [],
+            "envs": ["all"]
+        }
+    ],
+    "authentications": [
+        {
+            "id": "auth001",
+            "name": "MyAuth01",
+            "type": "Basic",
+            "is_enterprise_auth": true,
+            "force_empty": false,
+            "force_refresh": true,
+            "zones": ["all"],
+            "users": [],
+            "envs": ["all"]
+        },
+        {
+            "id": "auth002",
+            "name": "MyAuth02",
+            "type": "OAuth2",
+            "request_url": "https://example.com/tenant_id/oauth2/v2.0/authorize",
+            "token_url": "https://example.com/7tenant_id/oauth2/v2.0/token",
+            "client_id": "xxxxxx-xxxx-xxxxx-xxx-xxxxx",
+            "client_secret": "xxXxXxxxXxxxXxxx",
+            "scope": "api://xxxxx/User.Read",
+            "force_refresh": true,
+            "zones": ["all"],
+            "users": [],
+            "envs": ["all"]
+        },
+        {
+            "id": "auth003",
+            "name": "MyAuth03",
+            "type": "APIHeader",
+            "apikey": "xxxXxxXXxXxxxxxXX",
+            "force_refresh": true,
+            "zones": ["all"],
+            "users": [],
+            "envs": ["all"]
+        }
+    ],
+    "pg_services_configs": [
+        {}
+    ],
+    "managed_qgis_versions": [
+        {
+            "versions": [34008],
+            "zones": ["all"],
+            "envs": ["all"]
+        }
+    ],
+    "qgis_settings": [
+        {
+            "settings": [
+                {
+                    "path": "qgis/allowVersionCheck",
+                    "value": false
+                }
+            ],
+            "zones": ["all"],
+            "users": [],
+            "envs": ["all"]
+        },
+        {
+            "settings": [
+                {
+                    "path": "qgis/defaultProjectPathsRelative",
+                    "value": false
+                }
+            ],
+            "zones": ["orga1"],
+            "users": [],
+            "envs": ["all"]
+        }
+    ],
+    "db_connections": [
+        {
+            "qgis_provider": "postgres",
+            "name": "MyOrg - WORK - $ZONE_MAJ$",
+            "host": "geodata$ENV$.lesagencesdeleau.eu",
+            "port": "5432",
+            "dbname": "$ZONE$",
+            "auth_id": "auth001",
+            "get_role": true,
+            "configs": {
+                "allowGeometrylessTables": true,
+                "metadataInDatabase": true,
+                "projectsInDatabase": true
+            },
+            "zones": ["all"],
+            "users": [],
+            "envs": ["all"]
+        }
+    ],
+    "favorites": [
+        {
+            "path": "my/path",
+            "name": "MyFavorit",
+            "zones": ["all"],
+            "users": [],
+            "envs": ["all"]
+        }
+    ],
+    "wfs_connections": [
+        {
+            "name": "IGN - Géoplateforme",
+            "url" : "https://data.geopf.fr/wfs/ows?",
+            "version" : "2.0.0",
+            "zones": ["all"],
+            "envs": ["all"]
+        }
+    ],
+    "wms_connections": [
+        {
+            "name": "IGN - Géoplateforme - WMTS",
+            "url": "https://data.geopf.fr/wmts?SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetCapabilities",
+            "zones": ["all"],
+            "users": [],
+            "envs": ["all"]
+        }
+    ],
+    "arcgis_connections": [
+        {
+            "name": "MyArcGIS_Server",
+            "url": "https://myarcgisserver/server/rest/services/myservice",
+            "headers": [],
+            "community_endpoint": "",
+            "content_endpoint": "",
+            "authcfg": "",
+            "zones": ["all"],
+            "users": [],
+            "envs": ["all"]
+        }
+    ],
+    "composer_templates": [
+        {
+            "path": "my/templates/path",
+            "zones": ["all"],
+            "users": [],
+            "envs": ["all"]
+        }
+    ],
+    "svg_paths": [
+        {
+            "path": "my/svg/path",
+            "zones": ["all"],
+            "users": [],
+            "envs": ["all"]
+        }
+    ],
+    "custom_env_vars": [
+        {
+            "name": "QGIS_PLUGINPATH",
+            "value": "//example.com/my/plugins/path",
+            "zones": ["all"],
+            "users": [],
+            "envs": ["all"]
+        }
+    ],
+    "color_schemes": [
+        {
+            "name": "My Colors",
+            "colors": [
+                {
+                    "code": "#19d9cc",
+                    "name": "ok"
+                },
+                {
+                    "code": "#66e680",
+                    "name": "good"
+                },
+                {
+                    "code": "#ffe659",
+                    "name": "oups"
+                },
+                {
+                    "code": "#ff9900",
+                    "name": "ouch"
+                },
+                {
+                    "code": "#ff0000",
+                    "name": "fail"
+                }
+            ],
+            "zones": ["all"],
+            "users": [],
+            "envs": ["all"]
+        }
+    ],
+    "certificates": [
+        {
+            "cert_url": "https://example.com/certificate.der",
+            "zones": ["all"],
+            "users": [],
+            "envs": ["all"]
+        }
+    ],
+    "disable_session_role": [
+        {
+            "host_patterns": [
+                "*.exemple.com",
+                "test.exemple2.com"
+            ],
+            "zones": ["all"],
+            "envs": ["all"]
+        }
+    ]
+}

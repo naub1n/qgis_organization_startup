@@ -1,0 +1,723 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://geoapi.lesagencesdeleau.eu/api/qgis/config_schema",
+  "title": "QGIS Startup Parameters Configuration Schema",
+  "description": "Schema for validating QGIS startup parameters configuration file",
+  "type": "object",
+  "definitions": {
+    "scopeConfig": {
+      "type": "object",
+      "properties": {
+        "zones": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of zones where this configuration applies ('all' for all zones)",
+          "default": ["all"]
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of users who have access to this configuration (empty array for all users)",
+          "default": []
+        },
+        "envs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of environments where this configuration applies ('all' for all environments)",
+          "default": ["all"]
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of roles that have access to this configuration",
+          "default": []
+        }
+      }
+    }
+  },
+  "required": [
+    "profiles",
+    "managed_qgis_versions"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri",
+      "description": "Schema reference for this configuration file"
+    },
+    "default_crs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["crs"],
+        "properties": {
+          "crs": {
+            "type": "string",
+            "description": "Coordinate Reference System identifier (e.g., EPSG:2154)"
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/scopeConfig" }
+        ]
+      },
+      "description": "List of default Coordinate Reference Systems"
+    },
+    "deploy_envs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "profiles"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Deployment environment name used in 'envs' propertie"
+          },
+          "profiles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "suffix": {
+            "type": "string",
+            "description": "Suffix used in URLs and replace $ENV$ value"
+          }
+        }
+      }
+    },
+    "profiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["names"],
+        "properties": {
+          "names": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of profile names"
+          },
+          "default": {
+            "type": "string",
+            "description": "Default profile name"
+          },
+          "policy": {
+            "type": "integer",
+            "description": "Profile policy identifier"
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/scopeConfig" }
+        ]
+      },
+      "description": "List of QGIS profiles configuration"
+    },
+    "fqdn_regex": {
+      "type": "string",
+      "description": "Regular expression for Fully Qualified Domain Name parsing"
+    },
+    "role_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL template for role retrieval (contains $ENV$ placeholder)"
+    },
+    "zones": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Zone identifier"
+          },
+          "domain_ntlm": {
+            "type": "string",
+            "description": "NTLM domain for this zone"
+          },
+          "domain_email": {
+            "type": "string",
+            "description": "Email domain for this zone"
+          },
+          "domain_fqdn": {
+            "type": "string",
+            "description": "Fully Qualified Domain Name for this zone"
+          }
+        }
+      },
+      "description": "List of zone configurations"
+    },
+    "network_drives": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["drives"],
+        "properties": {
+          "drives": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of network drive paths"
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/scopeConfig" }
+        ]
+      },
+      "description": "List of network drives configuration"
+    },
+    "plugins_repositories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "url"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Repository name"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Repository URL (may contain $ENV$ placeholder)"
+          },
+          "authcfg": {
+            "type": "string",
+            "description": "Authentication configuration ID"
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/scopeConfig" }
+        ]
+      },
+      "description": "List of QGIS plugins repositories configuration"
+    },
+    "plugins": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["names"],
+        "properties": {
+          "names": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of plugin names"
+          },
+          "delete_mode": {
+            "type": "string",
+            "description": "Deletion mode for the plugin (e.g., 'disable')",
+            "enum": ["disable", null]
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/scopeConfig" }
+        ],
+        "anyOf": [
+          { "required": ["zones"] },
+          { "required": ["users"] },
+          { "required": ["roles"] }
+        ]
+      },
+      "description": "List of QGIS plugins configuration"
+    },
+    "plugins_configs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["plugin_name", "config"],
+        "properties": {
+          "plugin_name": {
+            "type": "string",
+            "description": "Name of the plugin to configure"
+          },
+          "config": {
+            "type": "object",
+            "description": "Configuration object for the plugin (structure depends on plugin)",
+            "additionalProperties": true
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/scopeConfig" }
+        ]
+      },
+      "description": "List of QGIS plugins configurations"
+    },
+    "authentications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "type"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Authentication configuration ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "Authentication configuration name"
+          },
+          "type": {
+            "type": "string",
+            "description": "Authentication type",
+            "enum": ["Basic", "OAuth2", "APIHeader"]
+          },
+          "is_enterprise_auth": {
+            "type": "boolean",
+            "description": "Whether this is an enterprise authentication"
+          },
+          "force_empty": {
+            "type": "boolean",
+            "description": "Whether to force empty credentials"
+          },
+          "force_refresh": {
+            "type": "boolean",
+            "description": "Whether to force refresh of credentials"
+          },
+          "user": {
+            "type": "string",
+            "description": "Username for Basic authentication"
+          },
+          "pass": {
+            "type": "string",
+            "description": "Password for Basic authentication"
+          },
+          "request_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Request URL for OAuth2 authentication"
+          },
+          "token_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Token URL for OAuth2 authentication"
+          },
+          "client_id": {
+            "type": "string",
+            "description": "Client ID for OAuth2 authentication"
+          },
+          "client_secret": {
+            "type": "string",
+            "description": "Client secret for OAuth2 authentication"
+          },
+          "scope": {
+            "type": "string",
+            "description": "Scope for OAuth2 authentication"
+          },
+          "apikey": {
+            "type": "string",
+            "description": "API key for APIHeader authentication"
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/scopeConfig" }
+        ],
+        "dependencies": {
+          "type": {
+            "oneOf": [
+              {
+                "properties": {
+                  "type": { "enum": ["Basic"] }
+                }
+              },
+              {
+                "properties": {
+                  "type": { "enum": ["OAuth2"] }
+                },
+                "required": ["request_url", "token_url", "client_id", "client_secret", "scope"]
+              },
+              {
+                "properties": {
+                  "type": { "enum": ["APIHeader"] }
+                },
+                "required": ["apikey"]
+              }
+            ]
+          }
+        }
+      },
+      "description": "List of authentication configurations"
+    },
+    "pg_services_configs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "PostgreSQL services configurations (currently empty in example)"
+      },
+      "description": "List of PostgreSQL services configurations",
+      "default": []
+    },
+    "managed_qgis_versions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["versions"],
+        "properties": {
+          "versions": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "List of managed QGIS versions (e.g., 34008 for 3.4.8)"
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/scopeConfig" }
+        ]
+      },
+      "description": "List of managed QGIS versions"
+    },
+    "qgis_settings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["settings"],
+        "properties": {
+          "settings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["path", "value"],
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "description": "Settings path in QGIS configuration"
+                },
+                "value": {
+                  "type": ["string", "boolean", "integer", "number"],
+                  "description": "Value for this setting"
+                }
+              }
+            },
+            "description": "List of QGIS settings to configure"
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/scopeConfig" }
+        ]
+      },
+      "description": "List of QGIS settings configurations"
+    },
+    "db_connections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["qgis_provider", "name", "host", "port", "dbname"],
+        "properties": {
+          "qgis_provider": {
+            "type": "string",
+            "description": "QGIS database provider type",
+            "enum": ["postgres", "oracle"]
+          },
+          "name": {
+            "type": "string",
+            "description": "Connection name"
+          },
+          "host": {
+            "type": "string",
+            "description": "Database host (may contain $ENV$ placeholder)"
+          },
+          "port": {
+            "type": ["string", "integer"],
+            "description": "Database port"
+          },
+          "dbname": {
+            "type": "string",
+            "description": "Database name"
+          },
+          "auth_id": {
+            "type": "string",
+            "description": "Authentication configuration ID"
+          },
+          "get_role": {
+            "type": "boolean",
+            "description": "Whether to get role from authentication"
+          },
+          "configs": {
+            "type": "object",
+            "description": "Additional connection configurations",
+            "additionalProperties": true
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/scopeConfig" }
+        ]
+      },
+      "description": "List of database connections configurations"
+    },
+    "favorites": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "name"],
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Favorite path"
+          },
+          "name": {
+            "type": "string",
+            "description": "Favorite name"
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/scopeConfig" }
+        ]
+      },
+      "description": "List of favorite paths configuration"
+    },
+    "wfs_connections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "url"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "WFS connection name"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "WFS service URL"
+          },
+          "version": {
+            "type": "string",
+            "description": "WFS version"
+          },
+          "pagesize": {
+            "type": "integer",
+            "description": "Page size for WFS requests"
+          },
+          "ignoreAxisOrientation": {
+            "type": "boolean",
+            "description": "Whether to ignore axis orientation"
+          },
+          "remove": {
+            "type": "boolean",
+            "description": "Whether to remove this connection"
+          },
+          "authcfg": {
+            "type": "string",
+            "description": "Authentication configuration ID"
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/scopeConfig" }
+        ]
+      },
+      "description": "List of WFS connections configurations"
+    },
+    "wms_connections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "url"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "WMS connection name"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "WMS service URL"
+          },
+          "authcfg": {
+            "type": "string",
+            "description": "Authentication configuration ID"
+          },
+          "remove": {
+            "type": "boolean",
+            "description": "Whether to remove this connection"
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/scopeConfig" }
+        ]
+      },
+      "description": "List of WMS connections configurations"
+    },
+    "arcgis_connections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "url"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "ArcGIS connection name"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "ArcGIS service URL"
+          },
+          "headers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of headers for the connection"
+          },
+          "community_endpoint": {
+            "type": "string",
+            "description": "Community endpoint URL"
+          },
+          "content_endpoint": {
+            "type": "string",
+            "description": "Content endpoint URL"
+          },
+          "authcfg": {
+            "type": "string",
+            "description": "Authentication configuration ID"
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/scopeConfig" }
+        ]
+      },
+      "description": "List of ArcGIS connections configurations"
+    },
+    "composer_templates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path"],
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Path to composer templates directory"
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/scopeConfig" }
+        ]
+      },
+      "description": "List of composer templates paths configuration"
+    },
+    "svg_paths": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path"],
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Path to SVG directory"
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/scopeConfig" }
+        ]
+      },
+      "description": "List of SVG paths configuration"
+    },
+    "custom_env_vars": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "value"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Environment variable name"
+          },
+          "value": {
+            "type": "string",
+            "description": "Environment variable value"
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/scopeConfig" }
+        ]
+      },
+      "description": "List of custom environment variables configuration"
+    },
+    "color_schemes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "colors"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Color scheme name"
+          },
+          "colors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["code", "name"],
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "description": "Color code in hexadecimal format"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Color name/description"
+                }
+              }
+            },
+            "description": "List of colors in this scheme"
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/scopeConfig" }
+        ]
+      },
+      "description": "List of color schemes configuration"
+    },
+    "certificates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["cert_url"],
+        "properties": {
+          "cert_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL to the certificate file"
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/scopeConfig" }
+        ]
+      },
+      "description": "List of certificates configuration"
+    },
+    "disable_session_role": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["host_patterns"],
+        "properties": {
+          "host_patterns": {
+            "type": "array",
+            "description": "Host patterns where session role should be disabled",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "allOf": [
+          { "$ref": "#/definitions/scopeConfig" }
+        ]
+      },
+      "description": "List of host patterns where session role should be disabled"
+    }
+  },
+  "additionalProperties": false
+}

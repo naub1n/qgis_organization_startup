@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=82", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qgis_organization_startup"
+version = "1.0.0"
+description = "Paquet regroupant les fonctionnalités nécessaires au paramétrage de QGIS de manière centralisée"
+readme = "README.md"
+authors = [
+    { name = "Nicolas AUBIN", email = "aubin.nicolas@aesn.fr" }
+]
+license = "MIT"
+requires-python = ">=3.12"
+
+dependencies = [
+    "jsonschema>=4.26.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "build",
+    "twine"
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+qgis_organization_startup = [
+    "schema/organization_startup_config_schema.json",
+    "locales/**/*.mo"
+]
