@@ -10,7 +10,7 @@ readme = "README.md"
 authors = [
     { name = "Nicolas AUBIN", email = "aubin.nicolas@aesn.fr" }
 ]
-license = "MIT"
+license = "AGPL-3.0-or-later"
 requires-python = ">=3.12"
 
 dependencies = [
