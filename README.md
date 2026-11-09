@@ -46,7 +46,20 @@ L'identification du rôle de l'utilisateur est uniquement réalisé par une requ
 - de réaliser une requête GET sur `<role_url>?user_mail=user@exemple.com` (<role_url> étant à indiquer dans le fichier de config)
 - de renvoyer la réponse `{"role": "role_exemple"}`
 
-_N.B.: Une notion de groupe dans le fichier de config sera prochainement ajoutée pour identifier les groupes auxquels appartient l'utilisateur sur l'annuaire d'entreprise._
+### Filtrer par groupes de l'utilisateur (Windows)
+
+Chaque paramétrage accepte une clé optionnelle `groups` : liste de groupes (nom ou SID, insensible à la casse).
+Les groupes sont lus sur le jeton de session de l'utilisateur via `whoami /groups` (aucune connexion à l'annuaire requise).
+Comme pour `users`, si l'utilisateur satisfait la condition sur les groupes, le paramétrage est appliqué.
+
+Les éléments de la liste sont combinés par **OU**. Un élément peut être une liste imbriquée, dont les groupes sont combinés par **ET** :
+- `"groups": ["A", "B"]` : membre de A **ou** de B
+- `"groups": [["A", "B"]]` : membre de A **et** de B
+- `"groups": [["A", "B"], "C"]` : (membre de A **et** de B) **ou** membre de C
+Il est conseillé d'utiliser les SID, qui ne dépendent pas de la langue de Windows.
+Pour les connexions PostgreSQL (`db_connections`), la clé `role_groups` permet de définir une liste **ordonnée** de groupes : le premier auquel l'utilisateur appartient est utilisé comme `session_role` (valeur telle qu'écrite dans la liste, donc le nom du groupe/rôle). L'ordre définit la priorité. Le nom de domaine n'a pas d'importance : `Groupe` et `DOMAINE\Groupe` correspondent au même groupe, et le `session_role` est sans nom de domaine par défaut. Pour le conserver (valeur telle qu'écrite dans la liste), mettre `role_groups_keep_domain` à `true`. Si `get_role` est à `true`, le rôle récupéré via l'URL est prioritaire et `role_groups` est ignoré.
+
+Un changement de groupes n'est pris en compte qu'après une nouvelle ouverture de session Windows.
 
 ### Etape 5 - Déployer le fichier de config et le paquet qgis_organization_startup
 

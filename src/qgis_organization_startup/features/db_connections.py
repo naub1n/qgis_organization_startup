@@ -19,7 +19,15 @@ class CheckDbConnections(BaseStartup):
         cnx_dbname = self._format(self._cfg.get("dbname", ""))
         cnx_auth_id = self._cfg.get("auth_id", "")
         cnx_get_role = self._cfg.get("get_role", False)
+        cnx_role_groups = self._cfg.get("role_groups", [])
+        cnx_role_groups_keep_domain = self._cfg.get("role_groups_keep_domain", False)
         cnx_configs = self._cfg.get("configs", {})
+
+        # Le rôle récupéré via l'URL est prioritaire sur les groupes
+        if cnx_get_role:
+            session_role = self._user.user_role
+        else:
+            session_role = self._user.get_first_user_group(cnx_role_groups, cnx_role_groups_keep_domain)
 
         provider = QgsProviderRegistry.instance().providerMetadata(cnx_provider)
         uri = QgsDataSourceUri()
@@ -47,7 +55,7 @@ class CheckDbConnections(BaseStartup):
             "publicOnly": cnx_configs.get("publicOnly", False),
             "savePassword": cnx_configs.get("savePassword", False),
             "saveUsername": cnx_configs.get("saveUsername", False),
-            "session_role": self._user.user_role if cnx_get_role else ''
+            "session_role": session_role or ''
         }
         self._log(self._tr("Ajout/Restauration de la connection '{}'.").format(cnx_name), Qgis.Info)
         new_conn = provider.createConnection(None, config)

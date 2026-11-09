@@ -183,7 +183,8 @@
             "port": "5432",
             "dbname": "$ZONE$",
             "auth_id": "auth001",
-            "get_role": true,
+            "role_groups": ["GIS_ADMIN"],
+            "role_groups_keep_domain": false,
             "configs": {
                 "allowGeometrylessTables": true,
                 "metadataInDatabase": true,

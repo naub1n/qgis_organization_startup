@@ -24,6 +24,21 @@
           "description": "List of users who have access to this configuration (empty array for all users)",
           "default": []
         },
+        "groups": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              { "type": "string" },
+              {
+                "type": "array",
+                "items": { "type": "string" },
+                "minItems": 1
+              }
+            ]
+          },
+          "description": "List of directory groups (name or SID, case-insensitive). Top-level items are combined with OR; an item can be a nested list of groups combined with AND. Ex: [[\"A\", \"B\"], \"C\"] means (A AND B) OR C",
+          "default": []
+        },
         "envs": {
           "type": "array",
           "items": {
@@ -227,6 +242,7 @@
         "anyOf": [
           { "required": ["zones"] },
           { "required": ["users"] },
+          { "required": ["groups"] },
           { "required": ["roles"] }
         ]
       },
@@ -443,6 +459,19 @@
           "get_role": {
             "type": "boolean",
             "description": "Whether to get role from authentication"
+          },
+          "role_groups": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Ordered list of groups (priority order). The first one the user belongs to is used as session_role. Ignored if get_role is true",
+            "default": []
+          },
+          "role_groups_keep_domain": {
+            "type": "boolean",
+            "description": "Whether to keep the domain name (DOMAIN\\Group) in the session_role deduced from role_groups. By default the domain is removed",
+            "default": false
           },
           "configs": {
             "type": "object",
