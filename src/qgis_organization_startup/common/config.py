@@ -67,7 +67,7 @@ class StartupConfig:
             validate(instance=config, schema=schema)
 
         except Exception as e:
-            self._error(self._tr("Erreur dans la vérification de la configuration globale"))
+            self._error(self._tr("Erreur dans la vérification de la configuration globale: {}").format(str(e)))
 
         self._sp.end()
 
