@@ -95,7 +95,7 @@ class CheckAuthConfigs(BaseStartup):
                 )
                 qt_url = QtWidgets.QLabel(mp_alert_dlg)
                 qt_url.setText(html_doc_url)
-                qt_url.setAlignment(Qt.AlignCenter)
+                qt_url.setAlignment(Qt.AlignmentFlag.AlignCenter)
                 qt_url.setOpenExternalLinks(True)
 
                 button_close = QtWidgets.QPushButton('Fermer', mp_alert_dlg)
@@ -107,7 +107,7 @@ class CheckAuthConfigs(BaseStartup):
                 layout.addWidget(button_close)
 
                 mp_alert_dlg.setLayout(layout)
-                mp_alert_dlg.setWindowModality(Qt.WindowModal)
+                mp_alert_dlg.setWindowModality(Qt.WindowModality.WindowModal)
                 mp_alert_dlg.exec_()
 
                 warn_msg = "{}. Suivre la procédure : {}".format(warn_msg, html_doc_url)
@@ -189,7 +189,7 @@ class CheckAuthConfigs(BaseStartup):
         layout.addWidget(button_save)
 
         auth_dlg.setLayout(layout)
-        auth_dlg.setWindowModality(Qt.WindowModal)
+        auth_dlg.setWindowModality(Qt.WindowModality.WindowModal)
         auth_dlg.exec_()
 
     def _button_save_clicked(self, auth_dlg: QtWidgets.QDialog, authcfg_id, authcfg_name, authcfg_user, authcfg_pass):

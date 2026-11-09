@@ -20,7 +20,7 @@ class StartupRequest:
     def get_json(self, url: QUrl) -> dict | None:
         r = self.get(url)
 
-        if not r.error() == QNetworkReply.NoError:
+        if not r.error() == QNetworkReply.NetworkError.NoError:
             self.logger.error(r.errorString())
             return {}
 
