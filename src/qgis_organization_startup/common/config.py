@@ -68,6 +68,8 @@ class StartupConfig:
 
         except Exception as e:
             self._error(self._tr("Erreur dans la vérification de la configuration globale: {}").format(str(e)))
+            # Configuration invalide : on arrête le paramétrage
+            config = {}
 
         self._sp.end()
 
