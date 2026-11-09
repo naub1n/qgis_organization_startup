@@ -41,8 +41,9 @@ msgid "Erreur lors de la lecture de la configuration globale: {}"
 msgstr "Error while reading global configuration: {}"
 
 #: src\qgis_organization_startup\common\config.py:76
-msgid "Erreur dans la vérification de la configuration globale"
-msgstr "Error while validating global configuration"
+#, python-brace-format
+msgid "Erreur dans la vérification de la configuration globale: {}"
+msgstr "Error while validating global configuration: {}"
 
 #: src\qgis_organization_startup\common\user.py:91
 #, python-brace-format

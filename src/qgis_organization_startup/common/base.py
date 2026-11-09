@@ -57,12 +57,15 @@ class BaseStartup(MinBaseStartup):
                 try:
                     f_config = self._config.get(f_key, [])
 
+                    success = True
+
                     for cfg in f_config:
                         if self._user.is_in_scope(cfg):
                             self._cfg = cfg
-                            func(self, *args, **kwargs)
-
-                    success = True
+                            # Une fonction retournant explicitement False demande l'arrêt du paramétrage
+                            if func(self, *args, **kwargs) is False:
+                                success = False
+                                break
 
                 except Exception as e:
                     self.logger.error(self._tr("Erreur lors du paramétrage : {}").format(str(e)))
