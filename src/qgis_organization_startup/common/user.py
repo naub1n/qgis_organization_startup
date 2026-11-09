@@ -1,3 +1,5 @@
+import csv
+import io
 import os
 import subprocess
 import re
@@ -25,6 +27,7 @@ class UserInfo(MinBaseStartup):
         self.user_zone = self._get_user_zone()
 
         self.user_role = self._get_user_role()
+        self.user_groups = self._get_user_groups()
 
 
     def _get_user_email(self) -> str | None:
@@ -122,7 +125,58 @@ class UserInfo(MinBaseStartup):
 
         return None
 
-    #TODO Identifier les groupes de l'utilisateur "whoami /groups"
+    def _get_user_groups(self) -> set[str]:
+        """
+        Permet de récupérer les groupes de l'utilisateur à partir de son jeton de session (commande "whoami /groups").
+        Pour chaque groupe, le nom et le SID sont conservés (en minuscules) afin de pouvoir filtrer
+        indifféremment sur l'un ou l'autre (le SID est indépendant de la langue de l'OS).
+
+        :return:
+        """
+        groups = set()
+
+        if self.user_os == 'nt':
+            try:
+                output = subprocess.check_output(['whoami', '/groups', '/fo', 'csv', '/nh'], shell=True,
+                                                 stderr=subprocess.PIPE, universal_newlines=True, encoding='cp850')
+
+                # Colonnes: nom du groupe, type, SID, attributs
+                for row in csv.reader(io.StringIO(output)):
+                    if len(row) >= 3:
+                        groups.add(row[0].strip().lower())
+                        groups.add(row[2].strip().lower())
+
+                groups.discard("")
+
+            except (subprocess.CalledProcessError, OSError) as e:
+                self._log(self._tr("Impossible de récupérer les groupes de l'utilisateur: {}").format(
+                    getattr(e, "stderr", None) or str(e)), Qgis.Warning)
+
+        return groups
+
+    def get_first_user_group(self, groups: list[str], keep_domain: bool = False) -> str | None:
+        """
+        Retourne le premier groupe de la liste auquel appartient l'utilisateur.
+        L'ordre de la liste est prioritaire.
+        La comparaison se fait avec ou sans nom de domaine ("DOMAINE\\Groupe" ou "Groupe").
+
+        :param groups: Liste ordonnée de groupes (nom ou SID)
+        :param keep_domain: Si False, le nom de domaine est retiré du groupe retourné
+        :return:
+        """
+        # Noms des groupes de l'utilisateur sans le nom de domaine (les SID n'en contiennent pas)
+        user_groups_no_domain = set()
+        for user_group in self.user_groups:
+            user_groups_no_domain.add(user_group.split("\\")[-1])
+
+        for group in groups:
+            group_lower = group.lower()
+            if group_lower in self.user_groups or group_lower.split("\\")[-1] in user_groups_no_domain:
+                if keep_domain:
+                    return group
+                return group.split("\\")[-1]
+
+        return None
 
     def is_in_scope(self, feature_cfg: dict) -> bool:
         """
@@ -136,6 +190,7 @@ class UserInfo(MinBaseStartup):
         f_cfg_users = [x.lower() for x in feature_cfg.get("users", [])]
         f_cfg_envs = [x.lower() for x in feature_cfg.get("envs", ["all"])]
         f_cfg_roles = [x.lower() for x in feature_cfg.get("roles", ["all"])]
+        f_cfg_groups = feature_cfg.get("groups", [])
 
         # Test sur la zone
         in_zones = False
@@ -148,6 +203,26 @@ class UserInfo(MinBaseStartup):
         in_users = False
         if self.user_name in f_cfg_users:
             in_users = True
+
+        # Test sur les groupes (nom ou SID). Comme pour le username, 'all' n'est pas adapté.
+        # Chaque élément de la liste est soit un groupe (str), soit une liste de groupes (ET).
+        # Les éléments de premier niveau sont combinés par OU.
+        # Ex: [["A", "B"], "C"] => (A ET B) OU C
+        in_groups = False
+        for group_item in f_cfg_groups:
+            if isinstance(group_item, str):
+                group_item = [group_item]
+
+            in_group_item = True
+            for group in group_item:
+                if group.lower() not in self.user_groups:
+                    in_group_item = False
+                    break
+
+            # Une liste vide ne doit pas donner un accès à tout le monde
+            if in_group_item and group_item:
+                in_groups = True
+                break
 
         # Test sur le role
         in_roles = False
@@ -168,6 +243,10 @@ class UserInfo(MinBaseStartup):
 
         # Si l'utilisateur est explicitement nommé : Ok
         if in_users:
+            return True
+
+        # Si l'utilisateur appartient à l'un des groupes indiqués : Ok
+        if in_groups:
             return True
 
         # Si la zone et le role correspondent : Ok

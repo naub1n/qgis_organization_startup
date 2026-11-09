@@ -12,6 +12,7 @@ import logging
 import sys
 
 from pathlib import Path
+from importlib.util import find_spec
 
 STARTUP_URI = os.getenv("PYQGIS_STARTUP_QOS_STARTUP_URI")
 QGIS_ORGANIZATION_STARTUP_PKG_URI = os.getenv("PYQGIS_STARTUP_QOS_PKG_URI")
@@ -55,26 +56,22 @@ else:
     QOS.start()
 """
 
-def qgis_major_version():
-    result = subprocess.run(
-        [sys.executable, "--version"],
-        capture_output=True,
-        text=True,
-        check=True,
-    )
+def qgis_major_version() -> int:
+    """
+    Permet d'indentifier la version de QGIS à partir de QTG.
+    PyQt5 -> QGIS 3, PyQt6 -> QGIS 4.
+    Le cas particulier de QGIS 3.44 QT6 est volontairement ignoré.
+    """
+    if "PyQt6" in sys.modules or (not "PyQt5" in sys.modules and find_spec("PyQt6")):
+        version = 4
+    elif "PyQt5" in sys.modules or find_spec("PyQt5"):
+        version = 3
+    else:
+        raise RuntimeError("Impossible de déterminer la version majeure de QGIS (ni PyQt5 ni PyQt6)")
 
-    output = result.stdout + result.stderr
-
-    match = re.search(r"QGIS\s+(\d+)", output)
-
-    if not match:
-        raise RuntimeError(
-            f"Impossible de déterminer la version QGIS : {output!r}"
-        )
-
-    return int(match.group(1))
-
-    #TODO: Rendre compatible avec Linux/Ubuntu
+    logging.info(f"Version majeure déduite du binding Qt : {version} "
+                 "(hypothèse : QGIS 3.x = PyQt5, QGIS 4 = PyQt6)")
+    return version
 
 
 class SetupQgisOrganisationStartup:

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-14 14:25+0200\n"
+"POT-Creation-Date: 2026-11-09 15:53+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,13 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src\qgis_organization_startup\common\base.py:72
-#, python-brace-format
+#: src\qgis_organization_startup\common\base.py:71
 msgid "Erreur lors du paramétrage : {}"
 msgstr ""
 
-#: src\qgis_organization_startup\common\base.py:111
-#, python-brace-format
+#: src\qgis_organization_startup\common\base.py:110
 msgid "Paramétrage du plugin {}"
 msgstr ""
 
@@ -35,36 +33,34 @@ msgstr ""
 msgid "L'URI du fichier de configuration n'est pas valide"
 msgstr ""
 
-#: src\qgis_organization_startup\common\config.py:61
-#, python-brace-format
+#: src\qgis_organization_startup\common\config.py:58
 msgid "Erreur lors de la lecture de la configuration globale: {}"
 msgstr ""
 
-#: src\qgis_organization_startup\common\config.py:76
-#, python-brace-format
+#: src\qgis_organization_startup\common\config.py:70
 msgid "Erreur dans la vérification de la configuration globale: {}"
 msgstr ""
 
-#: src\qgis_organization_startup\common\user.py:91
-#, python-brace-format
+#: src\qgis_organization_startup\common\user.py:94
 msgid ""
 "Impossible d'identifier la zone de l'utilisateur avec le domaine utilisateur "
 "'{}' ou le domaine mail '{}' ou le domaine FQDN '{}'"
 msgstr ""
 
-#: src\qgis_organization_startup\common\user.py:93
-#, python-brace-format
+#: src\qgis_organization_startup\common\user.py:96
 msgid "Zone de l'utilisateur: {}"
 msgstr ""
 
-#: src\qgis_organization_startup\common\user.py:114
-#, python-brace-format
+#: src\qgis_organization_startup\common\user.py:117
 msgid "Erreur lors de la lecture du rôle de l'utilisateur: {}"
 msgstr ""
 
-#: src\qgis_organization_startup\common\user.py:119
-#, python-brace-format
+#: src\qgis_organization_startup\common\user.py:122
 msgid "Role de l'utilisateur : {}"
+msgstr ""
+
+#: src\qgis_organization_startup\common\user.py:152
+msgid "Impossible de récupérer les groupes de l'utilisateur: {}"
 msgstr ""
 
 #: src\qgis_organization_startup\features\arcgis_connections.py:10
@@ -72,12 +68,10 @@ msgid "Vérification des connexions ArcGIS Server"
 msgstr ""
 
 #: src\qgis_organization_startup\features\arcgis_connections.py:38
-#, python-brace-format
 msgid "Connexion ArcGIS '{}' supprimée"
 msgstr ""
 
 #: src\qgis_organization_startup\features\arcgis_connections.py:41
-#, python-brace-format
 msgid "Connexion ArcGIS '{}' ajoutée/modifiée"
 msgstr ""
 
@@ -86,57 +80,52 @@ msgid "Vérification des configurations d'authentification"
 msgstr ""
 
 #: src\qgis_organization_startup\features\auth_configs.py:46
-#, python-brace-format
 msgid "La configuration {} est déjà présente"
 msgstr ""
 
 #: src\qgis_organization_startup\features\auth_configs.py:49
-#, python-brace-format
 msgid "Ajout de la configuration d'authentification {}"
 msgstr ""
 
-#: src\qgis_organization_startup\features\auth_configs.py:81
+#: src\qgis_organization_startup\features\auth_configs.py:82
 msgid "Mot de passe principal non vérifié"
 msgstr ""
 
-#: src\qgis_organization_startup\features\auth_configs.py:89
+#: src\qgis_organization_startup\features\auth_configs.py:90
 msgid "Réinitialiser son mot de passe principal"
 msgstr ""
 
-#: src\qgis_organization_startup\features\auth_configs.py:93
+#: src\qgis_organization_startup\features\auth_configs.py:94
 msgid ""
 "Si vous ne vous souvenez plus de votre mot de passe principal, veuillez "
 "suivre la procédure ci-dessous :"
 msgstr ""
 
-#: src\qgis_organization_startup\features\auth_configs.py:131
-#, python-brace-format
+#: src\qgis_organization_startup\features\auth_configs.py:132
 msgid ""
 "Vérification du mot de passe de la configuration '{}' impossible après "
 "plusieurs tentatives"
 msgstr ""
 
-#: src\qgis_organization_startup\features\auth_configs.py:143
-#, python-brace-format
+#: src\qgis_organization_startup\features\auth_configs.py:145
 msgid ""
 "Vérification du mot de passe de la configuration '{}' impossible car vous ne "
 "semblez pas être connecté au domain"
 msgstr ""
 
-#: src\qgis_organization_startup\features\auth_configs.py:147
-#, python-brace-format
+#: src\qgis_organization_startup\features\auth_configs.py:150
 msgid "Vérification du mot de passe de la configuration '{}'"
 msgstr ""
 
-#: src\qgis_organization_startup\features\auth_configs.py:163
+#: src\qgis_organization_startup\features\auth_configs.py:166
 msgid "Indiquer votre login et mdp"
 msgstr ""
 
-#: src\qgis_organization_startup\features\auth_configs.py:166
+#: src\qgis_organization_startup\features\auth_configs.py:169
 msgid "Indiquer votre email"
 msgstr ""
 
-#: src\qgis_organization_startup\features\auth_configs.py:173
+#: src\qgis_organization_startup\features\auth_configs.py:176
 msgid "Indiquer votre mot de passe d'entreprise"
 msgstr ""
 
@@ -145,32 +134,26 @@ msgid "Import de certificats ..."
 msgstr ""
 
 #: src\qgis_organization_startup\features\certs.py:33
-#, python-brace-format
 msgid "Erreur lors de la lecture du certificat {}: {}"
 msgstr ""
 
 #: src\qgis_organization_startup\features\certs.py:50
-#, python-brace-format
 msgid "Le certificat '{}' existe déjà dans le système"
 msgstr ""
 
 #: src\qgis_organization_startup\features\certs.py:53
-#, python-brace-format
 msgid "Le certificat '{}' existant n'est pas valide et sera remplacé"
 msgstr ""
 
 #: src\qgis_organization_startup\features\certs.py:61
-#, python-brace-format
 msgid "Ajout/Remplacement du certificat '{}' dans QGIS"
 msgstr ""
 
 #: src\qgis_organization_startup\features\certs.py:71
-#, python-brace-format
 msgid "Certificat '{}' ajouté/actualisé"
 msgstr ""
 
 #: src\qgis_organization_startup\features\certs.py:73
-#, python-brace-format
 msgid "Le certificat '{}' n'est pas viable pour QGIS"
 msgstr ""
 
@@ -179,7 +162,6 @@ msgid "Ajout des schémas de couleurs"
 msgstr ""
 
 #: src\qgis_organization_startup\features\colors.py:17
-#, python-brace-format
 msgid "Ajout du schéma de couleurs {}"
 msgstr ""
 
@@ -187,8 +169,7 @@ msgstr ""
 msgid "Vérification des connexions aux bdd"
 msgstr ""
 
-#: src\qgis_organization_startup\features\db_connections.py:52
-#, python-brace-format
+#: src\qgis_organization_startup\features\db_connections.py:60
 msgid "Ajout/Restauration de la connection '{}'."
 msgstr ""
 
@@ -201,7 +182,6 @@ msgid "Définition des variables d'environnement personnalisées"
 msgstr ""
 
 #: src\qgis_organization_startup\features\env_var.py:38
-#, python-brace-format
 msgid "Déclaration de la variable d'environnement {}"
 msgstr ""
 
@@ -210,7 +190,6 @@ msgid "Vérification des marques-pages"
 msgstr ""
 
 #: src\qgis_organization_startup\features\favorites.py:23
-#, python-brace-format
 msgid "Ajout/Restauration du marque-page '{}'."
 msgstr ""
 
@@ -218,15 +197,14 @@ msgstr ""
 msgid "Vérification des modèles"
 msgstr ""
 
-#: src\qgis_organization_startup\features\listener_session_role.py:10
+#: src\qgis_organization_startup\features\listener_session_role.py:11
 msgid "Vérification du role de session à l'ajout de couches"
 msgstr ""
 
-#: src\qgis_organization_startup\features\listener_session_role.py:16
-#, python-brace-format
+#: src\qgis_organization_startup\features\listener_session_role.py:20
 msgid ""
-"Désactivation du rôle de session lors de l'ajout d'une couche à partir du "
-"host {}"
+"Désactivation du rôle de session lors de l'ajout d'une couche à partir des "
+"hosts {}"
 msgstr ""
 
 #: src\qgis_organization_startup\features\network_drives.py:11
@@ -250,32 +228,26 @@ msgid "Vérification des plugins requis"
 msgstr ""
 
 #: src\qgis_organization_startup\features\plugins.py:37
-#, python-brace-format
 msgid "Désactivation du plugin {}"
 msgstr ""
 
 #: src\qgis_organization_startup\features\plugins.py:42
-#, python-brace-format
 msgid "Désinstallation du plugin {}"
 msgstr ""
 
 #: src\qgis_organization_startup\features\plugins.py:54
-#, python-brace-format
 msgid "Installation/Mise à jour du paquet {}"
 msgstr ""
 
 #: src\qgis_organization_startup\features\plugins.py:61
-#, python-brace-format
 msgid "Activation du plugin {}"
 msgstr ""
 
 #: src\qgis_organization_startup\features\plugins.py:64
-#, python-brace-format
 msgid "Le paquet {} est installé et à jour"
 msgstr ""
 
 #: src\qgis_organization_startup\features\plugins.py:66
-#, python-brace-format
 msgid "Le paquet {} est indisponible"
 msgstr ""
 
@@ -292,17 +264,14 @@ msgid "Le profil utilisé n'est pas administré par les équipes techniques"
 msgstr ""
 
 #: src\qgis_organization_startup\features\profiles.py:27
-#, python-brace-format
 msgid "Création du profil {}"
 msgstr ""
 
 #: src\qgis_organization_startup\features\profiles.py:32
-#, python-brace-format
 msgid "{} devient le profil par défaut"
 msgstr ""
 
 #: src\qgis_organization_startup\features\profiles.py:37
-#, python-brace-format
 msgid "La politique de sélection de profil au démarrage est fixée à {}"
 msgstr ""
 
@@ -323,7 +292,6 @@ msgid "Vérification de la version de QGIS"
 msgstr ""
 
 #: src\qgis_organization_startup\features\version.py:17
-#, python-brace-format
 msgid ""
 "Vous utilisez une version ({}) non gérée par votre administrateur ({}). Le "
 "paramétrage ne sera pas appliqué."
@@ -334,12 +302,10 @@ msgid "Vérification des connexions WFS"
 msgstr ""
 
 #: src\qgis_organization_startup\features\wfs_connections.py:44
-#, python-brace-format
 msgid "Connexion WFS '{}' supprimée"
 msgstr ""
 
 #: src\qgis_organization_startup\features\wfs_connections.py:47
-#, python-brace-format
 msgid "Connexion WFS '{}' ajoutée/modifiée"
 msgstr ""
 
@@ -348,32 +314,26 @@ msgid "Vérification des connexions WMS/WMTS"
 msgstr ""
 
 #: src\qgis_organization_startup\features\wms_connections.py:45
-#, python-brace-format
 msgid "Connexion WMS/WMTS '{}' supprimée"
 msgstr ""
 
 #: src\qgis_organization_startup\features\wms_connections.py:48
-#, python-brace-format
 msgid "Connexion WMS/WMTS '{}' ajoutée/modifiée"
 msgstr ""
 
 #: src\qgis_organization_startup\features\plugins_conf\menu_from_project.py:75
-#, python-brace-format
 msgid "Le projet '{}' est conservé"
 msgstr ""
 
 #: src\qgis_organization_startup\features\plugins_conf\menu_from_project.py:102
-#, python-brace-format
 msgid "Le projet '{}' n'a pas de cache de configuré, le cache est désactivé."
 msgstr ""
 
 #: src\qgis_organization_startup\features\plugins_conf\qwc_tools.py:30
-#, python-brace-format
 msgid "Suppression de la configuration '{}'."
 msgstr ""
 
 #: src\qgis_organization_startup\features\plugins_conf\qwc_tools.py:37
-#, python-brace-format
 msgid "La configuration '{}' existe déjà."
 msgstr ""
 

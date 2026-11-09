@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qgis_organization_startup"
-version = "1.0.1"
+version = "1.1.0"
 description = "Paquet regroupant les fonctionnalités nécessaires au paramétrage de QGIS de manière centralisée"
 readme = "README.md"
 authors = [
